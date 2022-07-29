@@ -1,36 +1,39 @@
 #include "hash_tables.h"
 
 /**
- * hash_table_print - a func what prints the hash table
- * @ht: the hash table
- * Return: void
+ * hash_table_print - Prints a hash table.
+ * @ht: A pointer to the hash table to print.
+ *
+ * Description: Key/value pairs are printed in the order
+ *              they appear in the array of the hash table.
  */
 void hash_table_print(const hash_table_t *ht)
 {
-	/*declarations */
-	unsigned long int iterate;
-	unsigned int flag = 0;
-	hash_node_t *location;
+	hash_node_t *node;
+	unsigned long int i;
+	unsigned char comma_flag = 0;
 
-	/* checking for a table */
-	if (!ht)
+	if (ht == NULL)
 		return;
-	/* print opening brace */
+
 	printf("{");
-	/* iterate through hash table unless it's the end */
-	for (iterate = 0; iterate < ht->size; iterate++)
+	for (i = 0; i < ht->size; i++)
 	{
-		location = ht->array[iterate];
-		while (location)
+		if (ht->array[i] != NULL)
 		{
-			/* flag off until first item is printed */
-			if (flag)
+			if (comma_flag == 1)
 				printf(", ");
-			printf("'%s': '%s'", location->key, location->value);
-			flag = 1;
-			location = location->next;
+
+			node = ht->array[i];
+			while (node != NULL)
+			{
+				printf("'%s': '%s'", node->key, node->value);
+				node = node->next;
+				if (node != NULL)
+					printf(", ");
+			}
+			comma_flag = 1;
 		}
 	}
-	/* print closing brace & newline */
 	printf("}\n");
 }
